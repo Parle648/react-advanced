@@ -3,4 +3,6 @@ import getBookingsThunk from "../modules/getBookingsThunk";
 
 export default function getBookings() {
     appStore.dispatch(getBookingsThunk())
+
+    return appStore.getState().bookings.bookings
 }

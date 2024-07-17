@@ -29,10 +29,13 @@ const bookings = createSlice({
     reducers: {
         updatebookings (state, action: PayloadAction<IBooking[]>) {
             state.bookings = [...action.payload]
+        },
+        deletebooking (state, action: PayloadAction<string>) {
+            state.bookings = state.bookings.filter(tour => tour.id !== action.payload).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
         }
     }
 })
 
-export const { updatebookings } = bookings.actions;
+export const { updatebookings, deletebooking } = bookings.actions;
 
 export default bookings.reducer

@@ -3,6 +3,9 @@ import { appStore } from "../../../app/store";
 import { toggleLoader } from "../../../shared/libs/slices/isLoading";
 import { updateToken } from "../../../shared/libs/slices/tokenSlice";
 import { updateUser } from "../../../shared/libs/slices/user";
+import { IFailedResponse } from "../../SignInForm/modules/signInThunk";
+import { toast } from "react-toastify";
+
 
 export interface IHeaders {
     method: 'POST' | 'GET' | 'PUTCH' | 'PUT' | 'DELETE',
@@ -53,11 +56,15 @@ const signUpThunk: any = createAsyncThunk(
             REQUEST_HEADERS(userCredentials)
             );
 
-            const data: ISuccessResponse = await response.json();
-            console.log(data);
+            let data;
 
             if (!response.ok) {
+                data = await response.json() as IFailedResponse;
+                toast.error(`${data.error}: ${data.message}`);
+
                 throw new Error("error");
+            } else {
+                data = await response.json() as ISuccessResponse;
             }
 
             
@@ -65,7 +72,7 @@ const signUpThunk: any = createAsyncThunk(
             await appStore.dispatch(updateUser(data.user))
             await navigate('/')
             return data
-        } catch (error) {
+        } catch (error: any ) {
             throw error;
         } finally {
             dispatch(toggleLoader());

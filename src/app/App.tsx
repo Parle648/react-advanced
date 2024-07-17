@@ -1,3 +1,4 @@
+import { ToastContainer } from "react-toastify"
 import BookingPage from "../pages/BookPage/BookingPage"
 import Main from "../pages/Main/Main"
 import SignInPage from "../pages/SignIn/SignIn"
@@ -22,6 +23,7 @@ function App() {
           <Route path="/bookings" element={<BookingPage />}></Route>
           <Route path="/trip/:tripId" element={<TourPage />}></Route>
         </Routes>
+        <ToastContainer className='notification' />
         <Footer />
       </BrowserRouter>
     </>

@@ -1,7 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { appStore } from "../../../app/store";
 import { toggleLoader } from "../../../shared/libs/slices/isLoading";
-import { updateTour } from "../../../shared/libs/slices/tour";
+import { ITourInform, updateTour } from "../../../shared/libs/slices/tour";
+import { IFailedResponse } from "../../../features/SignInForm/modules/signInThunk";
+import { toast } from "react-toastify";
 
 const tourInformThunk: any = createAsyncThunk(
     'tour/getOne',
@@ -21,9 +23,17 @@ const tourInformThunk: any = createAsyncThunk(
 
         try {
             const response = await fetch(`https://travel-app-api.up.railway.app/api/v1/trips/${id}`, HEADERS());
-            const data = await response.json();
+            let data
 
-            appStore.dispatch(updateTour(data));
+            if (!response.ok) {
+                data = await response.json() as IFailedResponse;
+                toast.error(`${data.error}: ${data.message}`);
+    
+                throw new Error("error");
+            } else {
+                data = await response.json() as ITourInform;
+                appStore.dispatch(updateTour(data));
+            }
             
         } catch (error) {
             

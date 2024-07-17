@@ -1,6 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { appStore } from "../../../app/store";
 import { toggleLoader } from "../../../shared/libs/slices/isLoading";
+import { toast } from "react-toastify";
+import { IFailedResponse, ISuccessResponse } from "../../SignInForm/modules/signInThunk";
 
 const bookTourThunk: any = createAsyncThunk('booking/create', async ({guests, date}: {guests: number, date: string}) => {
     appStore.dispatch(toggleLoader());
@@ -25,9 +27,19 @@ const bookTourThunk: any = createAsyncThunk('booking/create', async ({guests, da
 
     try {
         const response = await fetch('https://travel-app-api.up.railway.app/api/v1/bookings', HEADERS());
-        const data = await response.json();
+        let data
 
-        console.log(data);
+        if (!response.ok) {
+            data = await response.json() as IFailedResponse;
+            toast.error(`${data.error}: ${data.message}`);
+
+            throw new Error("error");
+        } else {
+            data = await response.json() as ISuccessResponse;
+            console.log(data);
+            
+            toast.success(`you create an order!`);
+        }
 
     } catch (error) {
         

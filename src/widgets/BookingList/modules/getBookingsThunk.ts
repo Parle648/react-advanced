@@ -2,6 +2,8 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { appStore } from "../../../app/store";
 import { toggleLoader } from "../../../shared/libs/slices/isLoading";
 import { updatebookings } from "../../../shared/libs/slices/bookings";
+import { toast } from "react-toastify";
+import { IFailedResponse } from "../../../features/SignInForm/modules/signInThunk";
 
 const getBookingsThunk: any = createAsyncThunk('bookings/getAll', async () => {
     appStore.dispatch(toggleLoader());
@@ -15,11 +17,21 @@ const getBookingsThunk: any = createAsyncThunk('bookings/getAll', async () => {
             }
         })
 
+        let data;
+
+        
+        
         if (!response.ok) {
-            throw new Error('error')
+            data = await response.json() as IFailedResponse;
+            toast.error(`${data.error}: ${data.message}`);
+            
+            throw new Error("error");
+        } else {
+            data = await response.json();
+            
+            await appStore.dispatch(updatebookings(data))
         }
 
-        appStore.dispatch(updatebookings(await response.json()))
         
     } catch (error) {
         

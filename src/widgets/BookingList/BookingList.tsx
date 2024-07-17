@@ -4,22 +4,22 @@ import { useEffect, useState } from 'react';
 import IBookedTour from '../../shared/types/IBookedTour';
 import getBookings from './api/getBookings';
 import { useSelector } from 'react-redux';
+import deleteFromBooking from './modules/deleteFromBooking';
 
 const BookingList = () => {
     const bookedTours = useSelector((state: any) => state.bookings.bookings)
-    const [tours, setTours] = useState<IBookedTour[]>(bookedTours)
     
-    const deleteFromBooking = (id: string) => {
-        setTours(tours.filter(tour => tour.id !== id).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()))
+    const deleteBooking = (id: string) => {
+        deleteFromBooking(id)
     }
-
-    useEffect(() => {
-        getBookings()
-    }, [])
     
+    useEffect(() => {
+        getBookings();
+    }, [])
+
     return (
         <div className={styles.bookings__list}>
-            {tours.map(({trip, date, guests, id}: IBookedTour) => {
+            {bookedTours.map(({trip, date, guests, id}: IBookedTour) => {
                 return (
                     <BookingCard 
                         key={id}
@@ -27,7 +27,7 @@ const BookingList = () => {
                         guests={guests} 
                         date={new Date(date).toLocaleDateString()} 
                         cost={trip.price} 
-                        onClose={() => deleteFromBooking(id)} />
+                        onClose={() => deleteBooking(id)} />
                 )
             })}
         </div>

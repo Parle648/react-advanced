@@ -14,7 +14,7 @@ const Input: FC<IInput> = ({title, type, name, dataTestId, min, max, value, onCh
             minLength={min ? min : 0}
             maxLength={max ? max : 100}
             value={value ? value : ''}
-            required />
+            />
         </label>
     );
 };

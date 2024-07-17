@@ -7,7 +7,7 @@ const Loader = () => {
     return (
         <>
             {isVisible && 
-                <div className={styles.loader}></div>
+                <div className={styles.loader} data-test-id="loader"></div>
             }
         </>
     );

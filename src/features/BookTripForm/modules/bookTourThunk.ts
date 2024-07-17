@@ -27,6 +27,8 @@ const bookTourThunk: any = createAsyncThunk('booking/create', async ({guests, da
         const response = await fetch('https://travel-app-api.up.railway.app/api/v1/bookings', HEADERS());
         const data = await response.json();
 
+        console.log(data);
+
     } catch (error) {
         
     } finally {

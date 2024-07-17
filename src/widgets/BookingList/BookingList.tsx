@@ -1,6 +1,6 @@
 import BookingCard from '../../entities/BookingCard/BookingCard';
 import styles from './styles/bookingList.module.scss';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import IBookedTour from '../../shared/types/IBookedTour';
 import getBookings from './api/getBookings';
 import { useSelector } from 'react-redux';

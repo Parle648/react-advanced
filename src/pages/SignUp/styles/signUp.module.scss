@@ -1,0 +1,12 @@
+.signUpPage {
+    height: 92vh;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 50px;
+}
+
+.signUpForm__link,
+.signInForm__link {
+  color: var(--color-blue-200);
+  transition: 0.1s color ease;
+}
